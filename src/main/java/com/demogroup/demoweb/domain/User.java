@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Builder
 @NoArgsConstructor
@@ -27,6 +29,9 @@ public class User {
     private String email;
 
     private String role=Role.ROLE_USER.name();
+
+    @OneToMany(mappedBy = "user")
+    private List<Mango> myMangoList;
 
     public void updateUsername(String username){
         this.username=username;

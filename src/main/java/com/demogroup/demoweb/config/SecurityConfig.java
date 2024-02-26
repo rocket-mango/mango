@@ -38,6 +38,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -87,12 +90,14 @@ public class SecurityConfig {
 //                .formLogin((form)->form
 //                        .disable()
 //                )
+                .cors((auth)->auth
+                        .configurationSource(configurationSource()))
                 .httpBasic((basic)->basic
                         .disable()
                 ) // httpBasic 로그인 방식도 사용하지 않는다.
                 .authorizeHttpRequests(request->request
                         .requestMatchers("/user/**","/api/**","/home","/disease/**","/api/disease/**").permitAll()
-                        .requestMatchers("/","/login/**","/oauth2/**","/loginform","/join","/joinProc").permitAll()
+                        .requestMatchers("/","/login/**","/oauth2/**","/loginform","/join","/joinProc","/test").permitAll()
                         .requestMatchers("/admin","/user/modify","/api/user/modify").hasRole("USER")
                         .anyRequest().authenticated()
                 ) /* 해당 사용자에 따라 제공하는 자원에 차이를 두는 '인가'를 설정한다.
@@ -229,6 +234,22 @@ public class SecurityConfig {
                 .build();
     }
 
+    @Bean
+    public CorsConfigurationSource configurationSource(){
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+
+        // 특정 IP 주소들을 추가합니다.
+        config.addAllowedOrigin("http://");
+        //config.addAllowedOrigin("http://");
+
+        // 다른 CORS 설정 (옵션)
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
     /*
     * oauth2Login 메소드에 대하여, OAuth2LoginAuthenticationFilter를 교체하여 successfulAuthentication 메소드를 오버라이딩 하는 것은
     * 혹시나 다른 오류가 생길지 몰라 시도하지 않고,

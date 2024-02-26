@@ -35,7 +35,7 @@ public class UserService {
 
     }
 
-    public UserDTO findByUsername(String username){
+    public User findByUsername(String username){
         //가입된 사용자 확인
         User user = userRepository.findByUsername(username)
                 //Optional의 orElseThrow 함수는 람다식으로 작성해줘야 한다.
@@ -43,7 +43,7 @@ public class UserService {
 
 
         //가입된 사용자의 dto를 보내기
-        return UserDTO.toDTO(user, user.getPassword());
+        return user;
     }
 
     //회원정보를 수정하는 메서드이다.

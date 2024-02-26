@@ -29,6 +29,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	//AWS client
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	//스프링 2.4 버전부터 web 의존성 안에 있던 validation 기능이 사라져서, 이렇게 validation 디펜던시를 따로 추가해야 한다.
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
